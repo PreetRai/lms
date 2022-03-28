@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:lms/screens/firstscreen.dart';
+import 'screens/home_page_widget.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,6 +20,6 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const HomePageWidget());
+        home: HomePageWidget());
   }
 }
