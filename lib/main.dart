@@ -1,5 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:lms/auth/login.dart';
+import 'package:lms/auth/signup.dart';
+import 'package:lms/home/welcome.dart';
+import 'package:lms/screens/first_screen.dart';
+import 'package:lms/screens/second_screen.dart';
+import 'home/home.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,59 +19,37 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData _customTheme() {
+      return ThemeData(
+        fontFamily: GoogleFonts.poppins().fontFamily,
+        primaryColor: Color(0xFFC780BA),
+        buttonColor: Color(0xFFC780BA),
+        scaffoldBackgroundColor: Colors.white,
+        cardColor: Color(0xffcF6EAF),
+        errorColor: Colors.red,
+        buttonTheme: ThemeData.light().buttonTheme.copyWith(
+              buttonColor: Color(0xFFC780BA),
+              colorScheme: ThemeData.light().colorScheme.copyWith(
+                  primary: Color(0xffC780BA), secondary: Color(0xffD9A2CF)),
+            ),
+      );
+    }
+
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
+        initialRoute: '/welcome',
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
-    );
+        //FirebaseAuth.instance.currentUser== null? '/Login':'/Dashboard',
+        routes: {
+          '/': (context) => const MyHomePage(),
+          '/welcome': (context) => const Welcome(),
+          '/first': (context) => const FirstScreen(),
+          '/second': (context) => const SecondScreen(),
+          '/Login': (context) => const Login(),
+          '/Signup': (context) => const Signup(),
+          '/dashboard': (context) => const MyHomePage(),
+        },
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: _customTheme());
   }
 }
