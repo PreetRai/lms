@@ -1,4 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import 'package:lms/extentions/string_extension.dart';
+import '../model/user_model.dart';
 
 class AppDrawer extends StatefulWidget {
   const AppDrawer({Key? key}) : super(key: key);
@@ -8,6 +13,22 @@ class AppDrawer extends StatefulWidget {
 }
 
 class _AppDrawerState extends State<AppDrawer> {
+  User? user = FirebaseAuth.instance.currentUser;
+  EmpModel loggedinAdmin = EmpModel();
+
+  @override
+  void initState() {
+    super.initState();
+    FirebaseFirestore.instance
+        .collection("Employees")
+        .doc(user!.uid)
+        .get()
+        .then((value) {
+      loggedinAdmin = EmpModel.fromMap(value.data());
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -16,26 +37,15 @@ class _AppDrawerState extends State<AppDrawer> {
         child: Column(
           children: [
             SizedBox(
-              height: 300,
               width: double.infinity,
               child: DrawerHeader(
                   decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
+                    color: Theme.of(context).primaryColorLight,
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  child: Flex(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    direction: Axis.horizontal,
                     children: [
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: IconButton(
-                          icon: const Icon(
-                            Icons.settings,
-                            size: 15,
-                            color: Colors.white,
-                          ),
-                          onPressed: () {},
-                        ),
-                      ),
                       Container(
                         decoration:
                             const BoxDecoration(color: Colors.transparent),
@@ -47,23 +57,27 @@ class _AppDrawerState extends State<AppDrawer> {
                           fit: BoxFit.fill,
                         )),
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Text('jhon',
-                              style:  TextStyle(
-                                fontSize: 20,
-                                color: Colors.white,
-                              )),
-                          Text(
-                            'hopkin',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w100),
-                            textScaleFactor: 0.8,
-                          )
-                        ],
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Flex(
+                          direction: Axis.vertical,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                                '${loggedinAdmin.firstName.toString().toCapitalized()}'
+                                ' ${loggedinAdmin.secondName.toString().toCapitalized()}',
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                )),
+                            Text(
+                              '${loggedinAdmin.email}',
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.w100),
+                              textScaleFactor: 0.8,
+                            )
+                          ],
+                        ),
                       )
                     ],
                   )),
@@ -73,17 +87,19 @@ class _AppDrawerState extends State<AppDrawer> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   TextButton(
-                      onPressed: () {
-                        // Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        //     builder: (context) => const DashBoard()));
-                      },
+                      onPressed: () {},
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: const [
+                          Padding(
+                            padding: EdgeInsets.only(left: 24, right: 16.0),
+                            child: Icon(Icons.dashboard, color: Colors.black),
+                          ),
                           Text(
                             'Dashboard',
-                          ),
-                          Icon(Icons.dashboard)
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
+                          )
                         ],
                       )),
                   TextButton(
@@ -92,12 +108,16 @@ class _AppDrawerState extends State<AppDrawer> {
                         //     builder: (context) => const Employeedetails()));
                       },
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: const [
-                          Text(
-                            'Employees',
+                          Padding(
+                            padding: EdgeInsets.only(left: 24, right: 16.0),
+                            child: Icon(Icons.emoji_people_outlined,
+                                color: Colors.black),
                           ),
-                          Icon(Icons.emoji_people_outlined)
+                          Text('Employees',
+                              style: TextStyle(
+                                color: Colors.black,
+                              )),
                         ],
                       )),
                   TextButton(
@@ -106,12 +126,16 @@ class _AppDrawerState extends State<AppDrawer> {
                         //       builder: (context) => const Contactsdetails()));
                       },
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: const [
-                          Text(
-                            'Contacts',
+                          Padding(
+                            padding: EdgeInsets.only(left: 24, right: 16.0),
+                            child:
+                                Icon(Icons.contact_page, color: Colors.black),
                           ),
-                          Icon(Icons.contact_page)
+                          Text('Contacts',
+                              style: TextStyle(
+                                color: Colors.black,
+                              )),
                         ],
                       )),
                   TextButton(
@@ -120,12 +144,32 @@ class _AppDrawerState extends State<AppDrawer> {
                       //          builder: (context) => const Opportunities()));
                     },
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: const [
-                        Text(
-                          'Opportunities',
+                        Padding(
+                          padding: EdgeInsets.only(left: 24, right: 16.0),
+                          child: Icon(Icons.group_add, color: Colors.black),
                         ),
-                        Icon(Icons.group_add)
+                        Text('Opportunities',
+                            style: TextStyle(
+                              color: Colors.black,
+                            ))
+                      ],
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      logout(context);
+                    },
+                    child: Row(
+                      children: const [
+                        Padding(
+                          padding: EdgeInsets.only(left: 24, right: 16.0),
+                          child: Icon(Icons.exit_to_app, color: Colors.black),
+                        ),
+                        Text('Logout',
+                            style: TextStyle(
+                              color: Colors.black,
+                            )),
                       ],
                     ),
                   ),
@@ -133,28 +177,14 @@ class _AppDrawerState extends State<AppDrawer> {
               ),
             ),
             const Expanded(child: SizedBox()),
-            SizedBox(
-              width: double.infinity,
-              child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton(
-                      onPressed: () {
-                        //   logout(context);
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Text('Logout'),
-                          Icon(
-                            Icons.logout,
-                            size: 15,
-                          )
-                        ],
-                      ))),
-            )
           ],
         ),
       ),
     );
+  }
+
+  Future<void> logout(BuildContext context) async {
+    await FirebaseAuth.instance.signOut();
+    Navigator.pushNamed(context, '/');
   }
 }

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,7 +7,7 @@ import 'package:lms/auth/signup.dart';
 import 'package:lms/home/welcome.dart';
 import 'package:lms/screens/first_screen.dart';
 import 'package:lms/screens/second_screen.dart';
-import 'home/home.dart';
+import 'home/dashboard.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,32 +22,36 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     ThemeData _customTheme() {
       return ThemeData(
+        navigationBarTheme: NavigationBarThemeData(),
+        primaryTextTheme: TextTheme(bodyText1: TextStyle(color: Colors.black)),
+        accentColor: const Color(0xFFF6EAF4),
         fontFamily: GoogleFonts.poppins().fontFamily,
-        primaryColor: Color(0xFFC780BA),
-        buttonColor: Color(0xFFC780BA),
+        textTheme: TextTheme(bodyText1: TextStyle(color: Colors.black)),
+        primaryColor: const Color(0xFFC780BA),
+        primaryColorLight: const Color(0xFFF6EAF4),
+        buttonColor: const Color(0xFFC780BA),
         scaffoldBackgroundColor: Colors.white,
-        cardColor: Color(0xffcF6EAF),
+        cardColor: const Color(0xFFF6EAF4),
         errorColor: Colors.red,
         buttonTheme: ThemeData.light().buttonTheme.copyWith(
-              buttonColor: Color(0xFFC780BA),
+              buttonColor: const Color(0xFFC780BA),
               colorScheme: ThemeData.light().colorScheme.copyWith(
-                  primary: Color(0xffC780BA), secondary: Color(0xffD9A2CF)),
+                  primary: const Color(0xffC780BA),
+                  secondary: const Color(0xFFF6EAF4)),
             ),
       );
     }
 
     return MaterialApp(
-        initialRoute: '/welcome',
-
-        //FirebaseAuth.instance.currentUser== null? '/Login':'/Dashboard',
+        initialRoute:
+            FirebaseAuth.instance.currentUser == null ? '/first' : '/dashboard',
         routes: {
-          '/': (context) => const MyHomePage(),
-          '/welcome': (context) => const Welcome(),
+          '/': (context) => const Welcome(),
           '/first': (context) => const FirstScreen(),
           '/second': (context) => const SecondScreen(),
-          '/Login': (context) => const Login(),
-          '/Signup': (context) => const Signup(),
-          '/dashboard': (context) => const MyHomePage(),
+          '/login': (context) => const Login(),
+          '/signup': (context) => const Signup(),
+          '/dashboard': (context) => const Dashboard(),
         },
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',

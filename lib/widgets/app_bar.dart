@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final String? title;
   const CustomAppBar({
-    Key? key, required String title,
+    Key? key,
+    required this.title,
   }) : super(key: key);
 
   @override
@@ -12,16 +14,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Row(
-        children: const [
-          Padding(
-              padding: EdgeInsets.all(8.0),
-              child: FlutterLogo(
-                size: 30,
-              )),
-          Text('L-con'),
-        ],
-      ),
+      backgroundColor: Theme.of(context).primaryColorLight,
+      foregroundColor: Colors.black,
+      centerTitle: true,
+      title: Text('${this.title}'),
       actions: const [
         Padding(padding: EdgeInsets.all(8.0), child: Icon(Icons.notifications)),
       ],

@@ -46,7 +46,6 @@ class EmpModel {
   String? email;
   String? phone;
   String? address;
-  String? username;
 
   bool? isAdmin;
   EmpModel(
@@ -54,7 +53,6 @@ class EmpModel {
       this.email,
       this.firstName,
       this.secondName,
-      this.username,
       this.jobTile,
       this.address,
       this.joiningDate,
@@ -68,7 +66,6 @@ class EmpModel {
         email: map['email'],
         firstName: map['firstName'],
         secondName: map['secondName'],
-        username: map['username'],
         jobTile: map['jobtitle'],
         address: map['address'],
         joiningDate: map['joiningdate'],
@@ -83,7 +80,6 @@ class EmpModel {
       'email': email,
       'firstName': firstName,
       'secondName': secondName,
-      'username': username,
       'jobtitle': jobTile,
       'address': address,
       'joiningdate': joiningDate,

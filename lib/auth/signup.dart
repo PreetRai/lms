@@ -235,8 +235,13 @@ class _SignupState extends State<Signup> {
 
         String firstName = '${employeess['firstName']}';
         String secondName = '${employeess['secondName']}';
+        String jobTitle = '${employeess['jobtitle']}';
+        String address = '${employeess['address']}';
+        String phone = '${employeess['phone']}';
+        String joiningDate = '${employeess['joininjdate']}';
 
-        signUp(email, password, firstName, secondName);
+        signUp(email, password, firstName, secondName, jobTitle, address, phone,
+            joiningDate);
       } else {
         print('Document does not exist on the database');
       }
@@ -244,8 +249,15 @@ class _SignupState extends State<Signup> {
     print(employee);
   }
 
-  void signUp(String email, String password, String firstName,
-      String secondName) async {
+  void signUp(
+      String email,
+      String password,
+      String firstName,
+      String secondName,
+      String jobTitle,
+      String address,
+      String phone,
+      String joiningDate) async {
     if (_empFormKey.currentState!.validate()) {
       String? uid = '';
       try {
@@ -253,7 +265,8 @@ class _SignupState extends State<Signup> {
             .createUserWithEmailAndPassword(email: email, password: password)
             .then((value) => {
                   uid = value.user!.uid,
-                  postDetailsToFirestore(uid, email, firstName, secondName)
+                  postDetailsToFirestore(uid, email, firstName, secondName,
+                      jobTitle, address, phone, joiningDate)
                 })
             .catchError((e) {
           Fluttertoast.showToast(msg: e!.message);
@@ -289,7 +302,14 @@ class _SignupState extends State<Signup> {
   }
 
   postDetailsToFirestore(
-      String? uid, String? email, String? firstName, String? secondName) async {
+      String? uid,
+      String? email,
+      String? firstName,
+      String? secondName,
+      String? jobTitle,
+      String? address,
+      String phone,
+      String joiningDate) async {
     // calling our firestore
     // calling our user model
     // sedning these values
@@ -304,6 +324,10 @@ class _SignupState extends State<Signup> {
     userModel.firstName = firstName;
     userModel.secondName = secondName;
     userModel.isAdmin = false;
+    userModel.address = address;
+    userModel.jobTile = jobTitle;
+    userModel.phone = phone;
+    userModel.joiningDate = joiningDate;
     await firebaseFirestore.collection("Employees").doc(ouid).delete();
 
     await firebaseFirestore
@@ -311,6 +335,6 @@ class _SignupState extends State<Signup> {
         .doc(uid)
         .set(userModel.toMap());
     Fluttertoast.showToast(msg: "Account created successfully :) ");
-    Navigator.pushNamed(context, '/Login');
+    Navigator.pushNamedAndRemoveUntil(context, '/dashboard', (route) => false);
   }
 }
