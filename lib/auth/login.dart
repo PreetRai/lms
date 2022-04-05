@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -110,13 +109,13 @@ class _LoginState extends State<Login> {
               children: [
                 Flex(direction: Axis.horizontal, children: [
                   Padding(
-                    padding: EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.all(10.0),
                     child: SizedBox(
                       height: 80,
                       child: Align(
                         alignment: Alignment.topCenter,
                         child: IconButton(
-                          icon: Icon(Icons.arrow_back_ios),
+                          icon: const Icon(Icons.arrow_back_ios),
                           onPressed: () {
                             Navigator.pop(context);
                           },
@@ -187,8 +186,10 @@ class _LoginState extends State<Login> {
             .signInWithEmailAndPassword(email: email, password: password)
             .then((uid) async => {
                   Fluttertoast.showToast(msg: "Login Successful"),
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, '/dashboard', (route) => false)
+                  Navigator.pushNamed(
+                    context,
+                    '/dashboard',
+                  )
                 });
       } on FirebaseAuthException catch (error) {
         switch (error.code) {
@@ -219,40 +220,5 @@ class _LoginState extends State<Login> {
         print(error.code);
       }
     }
-  }
-
-  getdata(String uid) async {
-    final QuerySnapshot result =
-        await FirebaseFirestore.instance.collection('Employees').get();
-    final List<DocumentSnapshot> document = result.docs;
-    int x = document.length.toInt();
-    print(x);
-    List employee = <String>[];
-
-    for (var i = 0; i < x; i++) {
-      employee.add('${document.elementAt(i).get('uid')}');
-    }
-
-    var loggedin =
-        employee.any((element) => element == uid) == true ? true : false;
-
-    FirebaseFirestore.instance
-        .collection('Employees')
-        .doc(uid)
-        .get()
-        .then((DocumentSnapshot documentSnapshot) {
-      if (documentSnapshot.exists) {
-        FirebaseFirestore.instance
-            .collection('Employees')
-            .doc(uid)
-            .update({'uid': '${uid}'});
-        Map<String, dynamic> employeess =
-            documentSnapshot.data()! as Map<String, dynamic>;
-        print('hello, ${employeess['firstName']}, ${employeess['uid']}');
-      } else {
-        print('Document does not exist on the database');
-      }
-    });
-    print(employee);
   }
 }

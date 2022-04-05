@@ -22,14 +22,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     ThemeData _customTheme() {
       return ThemeData(
-        navigationBarTheme: NavigationBarThemeData(),
-        primaryTextTheme: TextTheme(bodyText1: TextStyle(color: Colors.black)),
-        accentColor: const Color(0xFFF6EAF4),
+        navigationBarTheme: const NavigationBarThemeData(),
+        primaryTextTheme:
+            const TextTheme(bodyText1: TextStyle(color: Colors.black)),
         fontFamily: GoogleFonts.poppins().fontFamily,
-        textTheme: TextTheme(bodyText1: TextStyle(color: Colors.black)),
+        textTheme: const TextTheme(bodyText1: TextStyle(color: Colors.black)),
         primaryColor: const Color(0xFFC780BA),
         primaryColorLight: const Color(0xFFF6EAF4),
-        buttonColor: const Color(0xFFC780BA),
         scaffoldBackgroundColor: Colors.white,
         cardColor: const Color(0xFFF6EAF4),
         errorColor: Colors.red,
@@ -51,7 +50,7 @@ class MyApp extends StatelessWidget {
           '/second': (context) => const SecondScreen(),
           '/login': (context) => const Login(),
           '/signup': (context) => const Signup(),
-          '/dashboard': (context) => const Dashboard(),
+          '/dashboard': (context) => const DashBoard(),
         },
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',

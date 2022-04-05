@@ -45,7 +45,7 @@ class _SignupState extends State<Signup> {
         focusedBorder: UnderlineInputBorder(
             borderSide:
                 BorderSide(color: Theme.of(context).primaryColor, width: 0.0)),
-        border: UnderlineInputBorder(),
+        border: const UnderlineInputBorder(),
       ),
 
       // The validator receives the text that the user has entered.
@@ -84,7 +84,7 @@ class _SignupState extends State<Signup> {
         focusedBorder: UnderlineInputBorder(
             borderSide:
                 BorderSide(color: Theme.of(context).primaryColor, width: 0.0)),
-        border: UnderlineInputBorder(),
+        border: const UnderlineInputBorder(),
       ),
 
       // The validator receives the text that the user has entered.
@@ -117,7 +117,7 @@ class _SignupState extends State<Signup> {
         focusedBorder: UnderlineInputBorder(
             borderSide:
                 BorderSide(color: Theme.of(context).primaryColor, width: 0.0)),
-        border: UnderlineInputBorder(),
+        border: const UnderlineInputBorder(),
       ),
     );
     var statusBarHeight = MediaQuery.of(context).padding.top;
@@ -132,13 +132,13 @@ class _SignupState extends State<Signup> {
               children: [
                 Flex(direction: Axis.horizontal, children: [
                   Padding(
-                    padding: EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.all(10.0),
                     child: SizedBox(
                       height: 80,
                       child: Align(
                           alignment: Alignment.topCenter,
                           child: IconButton(
-                            icon: Icon(Icons.arrow_back_ios),
+                            icon: const Icon(Icons.arrow_back_ios),
                             onPressed: () {
                               Navigator.pop(context);
                             },
@@ -208,7 +208,6 @@ class _SignupState extends State<Signup> {
         await FirebaseFirestore.instance.collection('Employees').get();
     final List<DocumentSnapshot> document = result.docs;
     int x = document.length.toInt();
-    print(x);
     List employee = <String>[];
 
     for (var i = 0; i < x; i++) {
@@ -227,7 +226,7 @@ class _SignupState extends State<Signup> {
         FirebaseFirestore.instance
             .collection('Employees')
             .doc(uid)
-            .update({'uid': '${uid}'});
+            .update({'uid': uid});
         Map<String, dynamic> employeess =
             documentSnapshot.data()! as Map<String, dynamic>;
         //   print('hello, ${employeess['firstName']}, ${employeess['uid']}');
@@ -242,11 +241,8 @@ class _SignupState extends State<Signup> {
 
         signUp(email, password, firstName, secondName, jobTitle, address, phone,
             joiningDate);
-      } else {
-        print('Document does not exist on the database');
       }
     });
-    print(employee);
   }
 
   void signUp(
@@ -315,7 +311,6 @@ class _SignupState extends State<Signup> {
     // sedning these values
 
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-    User? user = _auth.currentUser;
     String ouid = uidtexteditingcontroller.text;
     EmpModel userModel = EmpModel();
 

@@ -25,12 +25,12 @@ class _SecondScreenState extends State<SecondScreen> {
                   direction: Axis.horizontal,
                   children: [
                     IconButton(
-                      icon: Icon(Icons.arrow_back_ios),
+                      icon: const Icon(Icons.arrow_back_ios),
                       onPressed: () {
                         Navigator.pop(context);
                       },
                     ),
-                    Spacer(),
+                    const Spacer(),
                     SizedBox(
                       width: 100,
                       child: Row(children: [
@@ -98,7 +98,7 @@ class _SecondScreenState extends State<SecondScreen> {
                     onPressed: () {
                       Navigator.pushNamed(context, '/');
                     },
-                    child: Text('Next')),
+                    child: const Text('Next')),
               ),
             ),
           ],

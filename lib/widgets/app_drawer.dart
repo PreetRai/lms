@@ -6,29 +6,16 @@ import 'package:lms/extentions/string_extension.dart';
 import '../model/user_model.dart';
 
 class AppDrawer extends StatefulWidget {
-  const AppDrawer({Key? key}) : super(key: key);
+  final String? name;
+  final String? email;
+  const AppDrawer({Key? key, required this.email, required this.name})
+      : super(key: key);
 
   @override
   State<AppDrawer> createState() => _AppDrawerState();
 }
 
 class _AppDrawerState extends State<AppDrawer> {
-  User? user = FirebaseAuth.instance.currentUser;
-  EmpModel loggedinAdmin = EmpModel();
-
-  @override
-  void initState() {
-    super.initState();
-    FirebaseFirestore.instance
-        .collection("Employees")
-        .doc(user!.uid)
-        .get()
-        .then((value) {
-      loggedinAdmin = EmpModel.fromMap(value.data());
-      setState(() {});
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -64,14 +51,12 @@ class _AppDrawerState extends State<AppDrawer> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                                '${loggedinAdmin.firstName.toString().toCapitalized()}'
-                                ' ${loggedinAdmin.secondName.toString().toCapitalized()}',
+                            Text('${widget.name}',
                                 style: const TextStyle(
                                   fontSize: 20,
                                 )),
                             Text(
-                              '${loggedinAdmin.email}',
+                              '${widget.email}',
                               style:
                                   const TextStyle(fontWeight: FontWeight.w100),
                               textScaleFactor: 0.8,

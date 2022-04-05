@@ -84,7 +84,7 @@ class _FirstScreenState extends State<FirstScreen> {
                     onPressed: () {
                       Navigator.pushNamed(context, '/second');
                     },
-                    child: Text('Next')),
+                    child: const Text('Next')),
               ),
             ),
           ],
